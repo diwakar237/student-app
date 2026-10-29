@@ -14,7 +14,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-node-version: '3.10'
+        python-version: '3.10'
 
     - name: 3. Continuous Integration (Install & Test)
       run: |
@@ -30,7 +30,6 @@ jobs:
 
     - name: 4. Build & Push Docker Image
       run: |
-        # Generate a unique tag using the Git short commit SHA
         IMAGE_TAG=${{ github.sha }}
         IMAGE_NAME=${{ secrets.DOCKERHUB_USERNAME }}/student-app
         
@@ -40,12 +39,6 @@ jobs:
 
     - name: 5. Deployment Setup (Prepare Manifest)
       run: |
-        # Replace the placeholders in the k8s manifest with actual runtime values
         sed -i "s|DOCKERHUB_USERNAME|${{ secrets.DOCKERHUB_USERNAME }}|g" k8s-deployment.yaml
         sed -i "s|IMAGE_TAG|${{ github.sha }}|g" k8s-deployment.yaml
-
-    - name: Deploy to Kubernetes Cluster
-      uses: azure/k8s-deploy@v4
-      with:
-        manifests: |
-          k8s-deployment.yaml
+        echo "Manifest successfully updated for local deployment tracking."
