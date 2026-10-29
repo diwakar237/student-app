@@ -4,3 +4,4 @@ def test_calculation():
     results = calculate_results([80, 90, 70])
     assert results["total"] == 240
     assert results["average"] == 80.0
+    assert results["grade"] == 'B' # Test the new grade output
